@@ -1,5 +1,6 @@
-# Let's configure te database access
-echo "
+# Let's configure te database access if not already there
+if [ ! -f /var/www/bolt/app/config/config.yml]; then
+  echo "
 
 # Default configuration for Bolt
 
@@ -138,6 +139,10 @@ database:
   host: $BOLT_DB_PORT_3306_TCP_ADDR
   port: $BOLT_DB_PORT_3306_TCP_PORT
   " > /var/www/bolt/app/config/config.yml
+else # Just do a SED on the dabase host
+  echo "Sedding the new Database IP in config.yml"
+  sed -ri "s/  host: ([0-9]{1,3}.){3}.[0-9]{1,3}/  host: $BOLT_DB_PORT_3306_TCP_ADDR/" /var/www/bolt/app/config/config.yml
+fi
 
 # Let's allow editing of this config file through the bolt admin interface
 chown -R www-data /var/www
