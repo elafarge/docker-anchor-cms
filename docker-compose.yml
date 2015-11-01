@@ -14,7 +14,7 @@ bolt-db:
   volumes:
     - "/var/bolt/mysql:/var/lib/mysql"
   environment:
-    - MYSQL_ROOT_PASSWORD=secret
-    - MYSQL_USER=bolt
-    - MYSQL_PASSWORD=bolt
+    - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSwORD
+    - MYSQL_USER=$MYSQL_USER
+    - MYSQL_PASSWORD=$MYSQL_PASSWORD
     - MYSQL_DATABASE=bolt
