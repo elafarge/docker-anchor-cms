@@ -50,7 +50,7 @@ RUN ln -sf /etc/nginx/sites-available/bolt /etc/nginx/sites-enabled/bolt
 # during deployments for instance)
 VOLUME /var/www/bolt/app/config
 VOLUME /var/www/bolt/extensions
-VOLUME /var/www/bolt/themes
+VOLUME /var/www/bolt/theme
 VOLUME /etc/nginx
 
 # And let's forward the HTTP and HTTPs ports to the host
