@@ -1,20 +1,15 @@
+bolt-db:
+  container_name: bolt_db
+  image: mariadb
+  environment:
+    - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+    - MYSQL_USER=$MYSQL_USER
+    - MYSQL_PASSWORD=$MYSQL_PASSWORD
+    - MYSQL_DATABASE=bolt
 bolt-server:
   container_name: bolt_server
   ports:
     - "80:80"
   links:
     - bolt-db
-  volumes:
-    - "/var/bolt/app/config:/var/www/bolt/app/config"
-    - "/var/bolt/app/theme:/var/www/bolt/app/theme"
   image: bolt-server
-bolt-db:
-  container_name: bolt_db
-  image: mariadb
-  volumes:
-    - "/var/bolt/mysql:/var/lib/mysql"
-  environment:
-    - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSwORD
-    - MYSQL_USER=$MYSQL_USER
-    - MYSQL_PASSWORD=$MYSQL_PASSWORD
-    - MYSQL_DATABASE=bolt

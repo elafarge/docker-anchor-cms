@@ -1,5 +1,8 @@
+#!/bin/bash
+
 # Let's configure te database access if not already there
-if [ ! -f /var/www/bolt/app/config/config.yml]; then
+if [ ! -e /var/www/bolt/app/config/config.yml ]; then
+  echo "Configuration file for bolt not found, creating a new one from template"
   echo "
 
 # Default configuration for Bolt
@@ -25,7 +28,7 @@ add_jquery: false
 
 # Caching configuration
 caching:
-    config: true
+    config: false
     templates: true
     request: false
     duration: 10
@@ -46,7 +49,6 @@ thumbnails:
     save_files: false
     allow_upscale: false
     exif_orientation: true
-#    browser_cache_time: 2592000
 
 # HTML handling (for articles posted via the web interface)
 htmlcleaner:
@@ -73,7 +75,7 @@ debuglog:
 
 # Use strict variables. This will make Bolt complain if you use {{ foo }},
 # when foo doesn't exist.
-strict_variables: true
+strict_variables: false
 
 # There are several options for giving editors more options to insert images,
 # video, etc in the WYSIWYG areas. But, as you give them more options, that
@@ -139,14 +141,27 @@ database:
   host: $BOLT_DB_PORT_3306_TCP_ADDR
   port: $BOLT_DB_PORT_3306_TCP_PORT
   " > /var/www/bolt/app/config/config.yml
+  env
 else # Just do a SED on the dabase host
   echo "Sedding the new Database IP in config.yml"
-  sed -ri "s/  host: ([0-9]{1,3}.){3}.[0-9]{1,3}/  host: $BOLT_DB_PORT_3306_TCP_ADDR/" /var/www/bolt/app/config/config.yml
+  sed -ri "s/  host: ([0-9]{1,3}.){3}[0-9]{1,3}/  host: $BOLT_DB_PORT_3306_TCP_ADDR/" /var/www/bolt/app/config/config.yml
 fi
 
 # Let's allow editing of this config file through the bolt admin interface
 chown -R www-data /var/www
 
+# Ok, now let's wait for our DataBase server to respond for a bit
+set -e
+echo -n "Waiting for TCP connection to $BOLT_DB_PORT_3306_TCP_ADDR:$BOLT_DB_PORT_3306_TCP_PORT..."
+
+while ! nc -w 1 $BOLT_DB_PORT_3306_TCP_ADDR $BOLT_DB_PORT_3306_TCP_PORT 2>/dev/null
+do
+  echo -n .
+  sleep 1
+done
+set +e
+
 # And finally run the bolt application onto an NGinx/PHP-FPM webserver
 service php5-fpm start
+echo "\n Starting NGinX"
 nginx -g "daemon off;"
