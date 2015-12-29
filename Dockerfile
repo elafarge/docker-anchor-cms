@@ -39,7 +39,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 ## Let's configure NGinx to use PHP
-COPY sites-available/bolt /etc/nginx/sites-available/bolt
+COPY ./volumes/nginx/sites-available/bolt /etc/nginx/sites-available/bolt
 RUN echo "cgi.fix_pathinfo = 0;" >> /etc/php5/fpm/php.ini
 
 # Let's setup our NGinx "Virtual Host"
@@ -47,11 +47,14 @@ RUN rm -rf /etc/nginx/sites-enabled/*
 RUN ln -sf /etc/nginx/sites-available/bolt /etc/nginx/sites-enabled/bolt
 
 # Let's expose the configuration so that it can be modified later (by chef,
-# during deployments for instance)
+# during deployments for instance). It includes the Bolt app config, its theme
+# and extensions folders (which contain themes and extensions config files) and
+# the NGinx config.
 VOLUME /var/www/bolt/app/config
 VOLUME /var/www/bolt/extensions
 VOLUME /var/www/bolt/theme
-VOLUME /etc/nginx
+VOLUME /var/www/bolt/files
+VOLUME /etc/nginx/sites-available
 
 # And let's forward the HTTP and HTTPs ports to the host
 EXPOSE 80 443
@@ -59,4 +62,5 @@ EXPOSE 80 443
 # We can now start our server
 COPY start_server.sh /start_server.sh
 RUN chmod +x /start_server.sh
-ENTRYPOINT /start_server.sh
+ENTRYPOINT ["/start_server.sh"]
+CMD nginx -g 'daemon off;'

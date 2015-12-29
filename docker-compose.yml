@@ -1,6 +1,8 @@
 bolt-db:
   container_name: bolt_db
   image: mariadb
+  volumes:
+      - "./volumes/mysql:/var/lib/mysql:rw"
   environment:
     - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
     - MYSQL_USER=$MYSQL_USER
@@ -10,6 +12,10 @@ bolt-server:
   container_name: bolt_server
   ports:
     - "80:80"
+  volumes:
+    - "./volumes/nginx/sites-available:/etc/nginx/sites-available:rw"
+    - "./volumes/bolt/app/config:/var/www/bolt/app/config:rw"
+    - "./volumes/bolt/theme:/var/www/bolt/theme:rw"
   links:
     - bolt-db
   image: bolt-server

@@ -1,0 +1,6 @@
+volumes/bolt/app/config/*.yml
+volumes/bolt/app/config/extensions/**/*
+volumes/bolt/theme/**/*
+volumes/mysql/**/*
+.swp
+.swo

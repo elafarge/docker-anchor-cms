@@ -163,5 +163,7 @@ set +e
 
 # And finally run the bolt application onto an NGinx/PHP-FPM webserver
 service php5-fpm start
-echo "\n Starting NGinX"
-nginx -g "daemon off;"
+echo "\n Starting Bolt server container...\n\n"
+echo "    Executing... $@ \n\n"
+
+exec "$@"
