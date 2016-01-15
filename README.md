@@ -35,6 +35,15 @@ MYSQL_ROOT_PASSWORD=xxx MYSQL_USER=bolt MYSQL_PASSWORD=xxx docker-compose up
 
 (you can change the `MYSQL_USER` to whatever you like)
 
+### Remove the install folder
+
+Once the database is setup, delete the `install` folder in your Anchor root
+directory:
+
+```shell
+docker exec -it anchor_server rm -rf /var/www/anchor/install
+```
+
 ### Using the image on DockerHub
 
 TODO: ECS, GCP, On-Prem' Kubernetes

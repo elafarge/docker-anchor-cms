@@ -13,8 +13,9 @@ anchor-server:
   ports:
     - "80:80"
   volumes:
-    - "./volumes/apache2/sites-available:/etc/apache2/sites-available:rw"
+    - "./volumes/nginx/sites-available:/etc/nginx/sites-available:rw"
     - "./volumes/anchor/anchor/config:/var/www/anchor/anchor/config:rw"
+    - "./volumes/anchor/themes:/var/www/anchor/themes:rw"
     - "./volumes/anchor/content:/var/www/anchor/content:rw"
   links:
     - anchor-db
