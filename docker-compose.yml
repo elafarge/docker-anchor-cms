@@ -1,5 +1,5 @@
-bolt-db:
-  container_name: bolt_db
+anchor-db:
+  container_name: anchor_db
   image: mariadb
   volumes:
       - "./volumes/mysql:/var/lib/mysql:rw"
@@ -7,15 +7,15 @@ bolt-db:
     - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
     - MYSQL_USER=$MYSQL_USER
     - MYSQL_PASSWORD=$MYSQL_PASSWORD
-    - MYSQL_DATABASE=bolt
-bolt-server:
-  container_name: bolt_server
+    - MYSQL_DATABASE=anchor
+anchor-server:
+  container_name: anchor_server
   ports:
     - "80:80"
   volumes:
-    - "./volumes/nginx/sites-available:/etc/nginx/sites-available:rw"
-    - "./volumes/bolt/app/config:/var/www/bolt/app/config:rw"
-    - "./volumes/bolt/theme:/var/www/bolt/theme:rw"
+    - "./volumes/apache2/sites-available:/etc/apache2/sites-available:rw"
+    - "./volumes/anchor/anchor/config:/var/www/anchor/anchor/config:rw"
+    - "./volumes/anchor/content:/var/www/anchor/content:rw"
   links:
-    - bolt-db
-  image: bolt-server
+    - anchor-db
+  image: anchor-server
