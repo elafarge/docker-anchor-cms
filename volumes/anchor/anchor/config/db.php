@@ -6,10 +6,10 @@ return array(
 	'connections' => array(
 		'mysql' => array(
 			'driver' => 'mysql',
-			'hostname' => '172.17.0.3',
+			'hostname' => '0.0.0.0',
 			'port' => 3306,
-			'username' => 'anchor',
-			'password' => 'newpwd',
+			'username' => 'anchorapp',
+			'password' => 'db_pwd',
 			'database' => 'anchor',
 			'charset' => 'utf8'
 		)

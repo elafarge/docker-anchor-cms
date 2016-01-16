@@ -1,14 +1,14 @@
 #
-# Dockerfile to run the PHP/Symfony backend of Bolt CMS
+# Dockerfile to run the PHP backend of Anchor CMS
 # The database backend is intended to be ran on a separate container
 # The WebServer in use is NGinx
 #
-# Author: Etienne LAFARGE <etienne.lafarge@gmail.com>
+# Author: Etienne LAFARGE <etienne.lafarge_at_gmail.com>
 # License: GPLv3
 #
 
 FROM ubuntu:14.04
-MAINTAINER Etienne Lafarge "etienne.lafarge@gmail.com"
+MAINTAINER Etienne Lafarge "etienne.lafarge_at_gmail.com"
 
 # Let's get rid of apt-get's interactive mode
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
@@ -38,9 +38,6 @@ RUN curl -L https://anchorcms.com/download -o anchorcms.zip
 RUN unzip anchorcms.zip -d /var/www/ \
     && mv /var/www/anchor-* /var/www/anchor \
     && rm anchorcms.zip && chown -R www-data:www-data /var/www/anchor
-
-# And allow the app itself to write its config files
-# RUN chmod -R 777 /var/www/anchor/anchor/config /var/www/anchor/content
 
 # Let's forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
