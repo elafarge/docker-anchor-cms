@@ -10,5 +10,5 @@
 # Let's just do a big .tar.gz of our database files and store them in ./backups
 
 mkdir -p ./backups
-tar -cvpzf "anchor-db-backup-$(date +F_R).tar.gz" ./volumes/mysql
+tar -cvpzf "./backups/anchor-db-backup-$(date +%F_%I-%M).tar.gz" ./volumes/mysql
 exit 0
