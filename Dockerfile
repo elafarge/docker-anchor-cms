@@ -34,7 +34,7 @@ RUN update-rc.d -f nginx remove
 ## Ok let's download and extract the source code of Anchor CMS
 RUN apt-get install -y curl
 RUN apt-get install -y unzip
-RUN curl -L https://anchorcms.com/download -o anchorcms.zip
+RUN curl -L https://github.com/elafarge/anchor-cms/archive/master.zip -o anchorcms.zip
 RUN unzip anchorcms.zip -d /var/www/ \
     && mv /var/www/anchor-* /var/www/anchor \
     && rm anchorcms.zip && chown -R www-data:www-data /var/www/anchor
