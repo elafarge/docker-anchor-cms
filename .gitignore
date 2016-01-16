@@ -1,7 +1,4 @@
 # Files created after the first application launch
-volumes/bolt/app/config/*.yml
-volumes/bolt/app/config/extensions/**/*
-volumes/bolt/theme/**/*
 volumes/mysql/**/*
 
 # Vim-generated files we don't want to commit
