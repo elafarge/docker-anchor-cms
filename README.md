@@ -1,16 +1,16 @@
-# Docker: Bolt CMS
+# Docker: Anchor CMS
 
 A docker container (actually, there's two docker containers in the final app.
-but one of them is just the stock MySQL one) all set to run Bolt CMS and create
-a containerized website or blog in minutes.
+but one of them is just the stock MySQL one) all set to run Anchor CMS and
+create a containerized personal website or blog in minutes.
 
 ### Global architecture
 
 #### Why MySQL ?
 
 Well, it would have been great to use `postgres` instead (at least just for its
-awesome CLI client), acknowledged. But so far, Bolt CMS hasn't been supporting
-`postgres` very well that's why we preferred to stick to `MySQL/MariaDB`.
+awesome CLI client), acknowledged. But so far, Anchors CMS hasn't been
+supporting `postgres`, that's why we preferred to stick to `MySQL/MariaDB`.
 Keep in mind that everytime you wish to access your database, you can spin up a
 `PHPMyAdmin` container and connect to your DB container in seconds (this one
 does the trick for instance: [https://github.com/corbinu/docker-phpmyadmin](https://github.com/corbinu/docker-phpmyadmin).
@@ -30,12 +30,34 @@ To run your CMS locally and access it via [http://localhost](http://localhost),
 you just have to run
 
 ```shell
-MYSQL_ROOT_PASSWORD=xxx MYSQL_USER=bolt MYSQL_PASSWORD=xxx docker-compose up
+MYSQL_ROOT_PASSWORD=xxx MYSQL_USER=anchor MYSQL_PASSWORD=xxx docker-compose up
 ```
 
-(you can change the `MYSQL_USER` to whatever you like)
+(you can also change the `MYSQL_USER` to whatever you like).
 
-### Remove the install folder
+This will pull the necessary images from DockerHub and run them.
+
+### Set up your blog.
+
+If your blog is already set up (which means a database exists and can be found
+in `./volumes/mysql`) you won't have to worry about that. (In other words, if
+you already have a blog set up, dump your MYSQL `/var/lib/mysql` folder into
+`./volumes/mysql`, remove the `/var/www/anchor/install` folder (see next
+section) and re-run the `docker-compose up` command above, everything should be
+running. Otherwise, access `http://localhost/install` in your browser and
+follow the instructions.
+
+When asked for database credentials, as an hostname, put the IP Adress that
+appears when you run:
+
+```shell
+docker inspect anchor_db | grep "\"IPAddress\":"
+```
+
+Put the username and password you used when running the `docker-compose up`
+command (as well as the database name) and everything should work like a charm.
+
+### Remove the install folder (CRUCIAL IN PROD)
 
 Once the database is setup, delete the `install` folder in your Anchor root
 directory:
@@ -44,14 +66,15 @@ directory:
 docker exec -it anchor_server rm -rf /var/www/anchor/install
 ```
 
+**Don't forget to do this in production or else, everone will be able to reset
+your blog and get admin rights!!**
+
 ### Using the image on DockerHub
 
 TODO: ECS, GCP, On-Prem' Kubernetes
 
 ## Todos:
 
-* Accept MySQL password changes in the container's startup script (just like
-  for the IP)
 * Write a little piece of something about how to deal with logging locally and
   above all, in the cloud (FluentD + ElasticSearch seems to be a good solution,
   this have to be digged into)
@@ -70,7 +93,10 @@ TODO: ECS, GCP, On-Prem' Kubernetes
 
 ## History
 
-December 2015: first satisfying proof-of-concept
+* January 2016: switched to Anchor CMS, the docker image works and has been
+pushed to Dockerhub, I'll start using it for [my personal
+blog](http://blog.elafarge.net).
+* December 2015: first satisfying proof-of-concept
 
 ## Contributors
 

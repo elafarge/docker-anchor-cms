@@ -1,6 +1,9 @@
 # Anchor virtual server
 server {
-    server_name blog.elafarge.*;
+
+    # Replace this with your servername (ex.: blog.myname.com)
+    server_name localhost;
+
     root /var/www/anchor/;
     index index.php;
 
