@@ -19,4 +19,4 @@ anchor-server:
     - "./volumes/anchor/content:/var/www/anchor/content:rw"
   links:
     - anchor-db
-  image: anchor-server
+  image: elafarge/docker-anchor-cms
