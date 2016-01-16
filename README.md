@@ -57,6 +57,8 @@ docker inspect anchor_db | grep "\"IPAddress\":"
 Put the username and password you used when running the `docker-compose up`
 command (as well as the database name) and everything should work like a charm.
 
+When done, done forget to deleate the install folder.
+
 ### Remove the install folder (CRUCIAL IN PROD)
 
 Once the database is setup, delete the `install` folder in your Anchor root
@@ -69,7 +71,22 @@ docker exec -it anchor_server rm -rf /var/www/anchor/install
 **Don't forget to do this in production or else, everone will be able to reset
 your blog and get admin rights!!**
 
-### Using the image on DockerHub
+### Back up the MySQL database and your `./volumes/anchor/themes` folder
+
+To avoid loosing the articles you wrote, you can easily back your database up
+and restore it later by running `./db_backup.sh`. This will create a
+`./backups` folder if it doesn't exist and put a dated backup of your
+`./volumes/mysql` folder in there. Keep it safe.
+
+If you're using custom themes or customizing the default theme, it's also
+advised that you back up your `./volumes/anchor/themes` folder at regular
+interval.
+
+Finally, if you spawn up a new container for an already existing Anchor CMS
+installation, copy your old `anchor/config` and `content` directories to
+`./volumes/anchor` before running the container as well.
+
+### Using the image in Production (and keep track of HTTP and MySQL logs)
 
 TODO: ECS, GCP, On-Prem' Kubernetes
 
